@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\DBAL\Connection;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class LibraryModel
+class LibraryModel extends AbstractController
 {
     public function index(Connection $connection): array
     {
@@ -16,17 +17,11 @@ class LibraryModel
         // ...
     }
 
-    public function GetLinks()
+    public function GetLinks(Connection $connection): array
     {
-      $links = DB::table("library_links")
-      ->orderBy('title', 'asc')
-      ->get();
-      $genres = DB::table("library_links")
-      ->orderBy('genre', 'asc')
-      ->get();
-      $authors = DB::table("library_links")
-      ->orderBy('author', 'asc')
-      ->get();
+      $links = $connection->fetchAllAssociative('SELECT * FROM library_links ORDER BY title ASC');
+      $genres = $connection->fetchAllAssociative('SELECT * FROM library_links ORDER BY genre ASC');
+      $authors = $connection->fetchAllAssociative('SELECT * FROM library_links ORDER BY author ASC');
       return [$links, $genres, $authors];
     }
 

@@ -4,33 +4,29 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Doctrine\DBAL\Connection;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use App\Entity\LibraryModel;
 
 class LibraryController extends AbstractController
 {
   #[Route('/', methods: ['GET', 'POST'])]
-  public function index(): Response
+  public function index(Connection $connection): Response
   {
-    return $this->render('library.html.twig', [
-      'links' => [],
-      'genres' => [],
-      'authors' => [],
-    ]);
-  }
+    $model = new LibraryModel();
+    $result = $model->GetLinks($connection);
 
-  public function index1(Request $request)
-  {
-    $model = new ModelLibrary();
-    $result = $model->GetLinks();
-    return view('Library.library', [
+    return $this->render('library.html.twig', [
       'links' => $result[0],
       'genres' => $result[1],
       'authors' => $result[2],
     ]);
   }
 
+  #[Route('/', methods: ['POST'])]
   public function GetFiles(Request $request)
   {
     $source = (string)$request->currentSource;
@@ -39,6 +35,7 @@ class LibraryController extends AbstractController
     return $files;
   }
 
+  #[Route('/', methods: ['POST'])]
   public function GetChapter(Request $request)
   {
     $source = (string)$request->data[0];
@@ -49,6 +46,7 @@ class LibraryController extends AbstractController
     return [$chapter, $index];
   }
 
+  #[Route('/', methods: ['POST'])]
   function LastChapter(Request $request)
   {
     $source = (string)$request->data[0];
@@ -60,6 +58,7 @@ class LibraryController extends AbstractController
     return [$chapter, $index];
   }
 
+  #[Route('/', methods: ['POST'])]
   function NextChapter(Request $request)
   {
     $source = (string)$request->data[0];

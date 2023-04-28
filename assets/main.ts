@@ -34,14 +34,14 @@ const viewBs = [libraryButton, optionsButton];
 
 const playButton = document.getElementById("playButton");
 playButton.onclick = function(){ PlayPauseResumeSpeech(); };
-const iPlay = document.getElementById("iPlay");
+const iPlay: HTMLImageElement = <HTMLImageElement>document.getElementById("iPlay");
 const stopButton = document.getElementById("stopButton");
 stopButton.onclick = function(){ StopSpeech(); };
-const locationNumber = document.getElementById("locationNumber");
-locationNumber.onchange = function(){ locationIndex = locationNumber.value; };
+const locationNumber: HTMLInputElement = <HTMLInputElement>document.getElementById("locationNumber");
+locationNumber.onchange = function(){ locationIndex = parseInt(locationNumber.value); };
 
-const chapterSelect = document.getElementById("chapterSelect");
-const loadSelected = document.getElementById("loadSelected");
+const chapterSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("chapterSelect");
+const loadSelected: HTMLInputElement = <HTMLInputElement>document.getElementById("loadSelected");
 loadSelected.onclick = function(){ 
   StopSpeech();
   textArea.scrollTop = 0; 
@@ -67,9 +67,9 @@ clearGenre.onclick = function(){ FilterGenre(-1); };
 const clearAuthor = document.getElementById("clearAuthor");
 clearAuthor.onclick = function(){ FilterAuthor(-1); };
 let currentSourceDiv = document.getElementById("currentSourceDiv");
-let sources = document.getElementsByClassName("source");
-let genres = document.getElementsByClassName("genre");
-let authors = document.getElementsByClassName("author");
+let sources: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("source") as HTMLCollectionOf<HTMLElement>;
+let genres: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("genre") as HTMLCollectionOf<HTMLElement>;
+let authors: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("author") as HTMLCollectionOf<HTMLElement>;
 
 const toggleLibrary = document.getElementById("toggleLibrary");
 toggleLibrary.onclick = function(){ ToggleMenu(databasePanels, databasePanelBs, 0); };
@@ -89,28 +89,28 @@ genreAuthorPanel.style.display = "none";
 const loadFile = document.getElementById("loadFile");
 loadFile.onclick = function(){ if(currentSourceDiv === null) { MessageBox("Please select a file."); return; } LoadNewText(currentSourceDiv.dataset.value); };
 
-const volumeSlider = document.getElementById("volumeSlider");
+const volumeSlider: HTMLInputElement = <HTMLInputElement>document.getElementById("volumeSlider");
 volumeSlider.onchange = function(){ ChangeVolume(volumeSlider.value); };
 
-const showVolume = document.getElementById("showVolume");
+const showVolume: HTMLInputElement = <HTMLInputElement>document.getElementById("showVolume");
 showVolume.onchange = function(){ ChangeVolume(showVolume.value); };
 
-const rateSlider = document.getElementById("rateSlider");
+const rateSlider: HTMLInputElement = <HTMLInputElement>document.getElementById("rateSlider");
 rateSlider.onchange = function(){ ChangeRate(rateSlider.value); };
 
-const showRate = document.getElementById("showRate");
+const showRate: HTMLInputElement = <HTMLInputElement>document.getElementById("showRate");
 showRate.onchange = function(){ ChangeRate(showRate.value); };
 
-const voiceSelect = document.getElementById("voiceSelect");
+const voiceSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("voiceSelect");
 voiceSelect.onchange = function(){ ChangeVoice(); };
 
-const fontSize = document.getElementById("fontSize");
+const fontSize: HTMLInputElement = <HTMLInputElement>document.getElementById("fontSize");
 fontSize.onchange = function(){ textArea.style.fontSize  = fontSize.value + "px"; };
 
-const fontStyle = document.getElementById("fontStyle");
+const fontStyle: HTMLInputElement = <HTMLInputElement>document.getElementById("fontStyle");
 fontStyle.onchange = function(){ textArea.style.fontFamily  = fontStyle.value; };
 
-const textArea = document.getElementById("textArea");
+const textArea: HTMLInputElement = <HTMLInputElement>document.getElementById("textArea");
 textArea.onkeyup = function(){ FindTextEndNumber(); NewText(); }
 textArea.onblur = function(){ FindTextEndNumber(); NewText(); }
 textArea.ondblclick = function(){ ChangeLocationIndex(GetCaretPosition(textArea)); }
@@ -121,7 +121,7 @@ const speech = new SpeechSynthesisUtterance();
 
 let voices = [];
 let playing = false;
-let locationIndex = 0;
+let locationIndex: number = 0;
 let savedText = '';
 let formattedText = '';
 let offset = 0;
@@ -133,13 +133,13 @@ let toggleView = false;
 
 ToggleMenu(databasePanels, databasePanelBs, 0);
 
-const makecurrents = document.getElementsByClassName("makecurrents");
+const makecurrents: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("makecurrents") as HTMLCollectionOf<HTMLElement>;
 for(let i = 0; i < makecurrents.length; i++) { makecurrents[i].onclick = function() { MakeCurrent(makecurrents[i]) } }
 
-const filtergenres = document.getElementsByClassName("filtergenres");
+const filtergenres: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("filtergenres") as HTMLCollectionOf<HTMLElement>;
 for(let i = 0; i < filtergenres.length; i++) { filtergenres[i].onclick = function() { FilterGenre(filtergenres[i]) } }
 
-const filterauthors = document.getElementsByClassName("filterauthors");
+const filterauthors: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("filterauthors") as HTMLCollectionOf<HTMLElement>;
 for(let i = 0; i < filterauthors.length; i++) { filterauthors[i].onclick = function() { FilterAuthor(filterauthors[i]) } }
 
 function ToggleView()
@@ -234,7 +234,7 @@ function PlayPauseResumeSpeech()
     textArea.disabled = true;
 
     window.speechSynthesis.speak(speech);
-    iPlay.src = "storage/Assets/playPauseLight.svg";
+    iPlay.src = "/play.svg";
     playing = true;
   }
   else if(playing && !window.speechSynthesis.paused)
@@ -242,36 +242,38 @@ function PlayPauseResumeSpeech()
     window.speechSynthesis.pause();
     textArea.value = formattedText;
     textArea.disabled = false;
-    iPlay.src = "storage/Assets/playCircledLight.svg";
+    iPlay.src = "/play.svg";
   }
   else if(playing && window.speechSynthesis.paused)
   {
     speech.text = hiddenText.innerText.substring(locationIndex);
     window.speechSynthesis.resume();
     textArea.disabled = true;
-    iPlay.src = "storage/Assets/playPauseLight.svg";
+    iPlay.src = "/pause.svg";
   }
 }
 
 function ChangeLocationIndex(newValue)
 {
   locationIndex = newValue;
-  locationNumber.value = locationIndex;
+  locationNumber.value = locationIndex.toString();
 }
 
 function GetCaretPosition(ctrl)
 {
   // IE < 9 Support 
-  if(document.selection)
-  {
-    ctrl.focus();
-    let range = document.selection.createRange();
-    let rangelen = range.text.length;
-    range.moveStart('character', -ctrl.value.length);
-    let start = range.text.length - rangelen;
-    return start + rangelen;
-  }// IE >=9 and other browsers
-  else if(ctrl.selectionStart || ctrl.selectionStart == '0')
+  // if(document.selection)
+  // {
+  //   ctrl.focus();
+  //   let range = document.selection.createRange();
+  //   let rangelen = range.text.length;
+  //   range.moveStart('character', -ctrl.value.length);
+  //   let start = range.text.length - rangelen;
+  //   return start + rangelen;
+  // }// IE >=9 and other browsers
+  // else 
+  
+  if(ctrl.selectionStart || ctrl.selectionStart == '0')
   {
     return ctrl.selectionEnd;
   }
@@ -283,7 +285,7 @@ function GetCaretPosition(ctrl)
 
 function FindTextEndNumber()
 {
-  locationNumber.max = hiddenText.innerText.length;
+  locationNumber.max = hiddenText.innerText.length.toString();
 }
 
 function NewText()
@@ -294,7 +296,7 @@ function NewText()
     formattedText = textArea.value;
     hiddenText.innerText = savedText;
     locationIndex = 0;
-    locationNumber.value = locationIndex;
+    locationNumber.value = locationIndex.toString();
   }
 }
 
@@ -302,11 +304,11 @@ function StopSpeech()
 {
   playing = false;
   window.speechSynthesis.cancel();
-  textArea.value = formattedText;
+  textArea.value = formattedText.toString();
   locationIndex = 0;
-  locationNumber.value = locationIndex;
+  locationNumber.value = locationIndex.toString();
   textArea.disabled = false;
-  iPlay.src = "storage/Assets/playCircledLight.svg";
+  iPlay.src = "/play.svg";
 }
 
 function ChangeVolume(volume)
@@ -340,7 +342,7 @@ window.speechSynthesis.onvoiceschanged = () => {
   {
     let newOption = document.createElement("option");
     newOption.innerHTML = voices[i].name;
-    newOption.id = i;
+    newOption.id = i.toString();
     voiceSelect.appendChild(newOption);
   }
 };
@@ -489,10 +491,10 @@ function LoadText(source, trigger)
   $.ajax(
   {
     method: "POST",
-    url: "/library/" + trigger,
+    url: trigger,
     headers:
     {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
     },
     data:
     {
@@ -507,11 +509,11 @@ function LoadText(source, trigger)
 
         if(chapters.length != volumes.length) return;
         chapterSelect.options.length = 0;
-        chapterSelect.dataset.total = chapters.length - 1;
+        chapterSelect.dataset.total = (chapters.length - 1).toString();
         for(let i = 0; i < chapters.length; i++)
         {
           let opt = document.createElement('option');
-          opt.dataset.number = i;
+          opt.dataset.number = i.toString();
           opt.dataset.volume = volumes[i];
           opt.dataset.chapter = chapters[i];
           opt.innerHTML = volumes[i] + '-' + chapters[i];
@@ -540,10 +542,10 @@ function LoadChapter(trigger)
   $.ajax(
   {
     method: "POST",
-    url: "/library/" + trigger,
+    url: trigger,
     headers:
     {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
     },
     data:
     {

@@ -52,7 +52,8 @@
         <div id="triggerSelectFile" class="togglePanelSub max-w-xs w-full max-h-full overflow-y-scroll">
 
           {% for link in links %}
-            <div class='makecurrents source w-10/12 mx-auto my-2 p-2 rounded-lg hover:bg-gray-100' data-value=`{{ link.link }}` data-author=`{{ link.author }}` data-genre=`{{ link.genre }}`>{{ link.title }}</div>
+            {{ link["title"] }}
+            <div class='makecurrents source w-10/12 mx-auto my-2 p-2 rounded-lg hover:bg-gray-100' data-value=`{{ link.link }}` data-author=`{{ link.author }}` data-genre=`{{ link.genre }}`>{{ link['title'] }}</div>
           {% endfor %}
 
         </div>
@@ -159,6 +160,4 @@
     </div>
 
   </body>
-
-  <script src="js/main.js"></script>
 </html>
