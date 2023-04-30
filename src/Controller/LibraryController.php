@@ -7,7 +7,10 @@ namespace App\Controller;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\LibraryModel;
 
@@ -26,47 +29,79 @@ class LibraryController extends AbstractController
     ]);
   }
 
-  #[Route('/', methods: ['POST'])]
-  public function GetFiles(Request $request)
+  #[Route('/GETTEXT', methods: ['POST'])]
+  public function GetFiles(Request $request) : Response
   {
-    $source = (string)$request->currentSource;
-    $model = new ModelLibrary();
-    $files = $model->GetFiles($source);
-    return $files;
+    $source = (string)$request->get('currentSource');
+    $model = new LibraryModel();
+    $files = $model->GetFiles($source);  
+    $response = new Response(json_encode($files));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
   }
 
-  #[Route('/', methods: ['POST'])]
+  #[Route('/GETCHAPTER', methods: ['POST'])]
   public function GetChapter(Request $request)
   {
-    $source = (string)$request->data[0];
-    $index = (int)$request->data[1];
-    $total = (int)$request->data[2];
-    $model = new ModelLibrary();
+    $source = (string)$request->get('currentSource');
+    $index = (int)$request->get('index');
+    $total = (int)$request->get('total');
+
+    $model = new LibraryModel();
     $chapter = $model->GetChapter($source, $index);
-    return [$chapter, $index];
+
+    $response = new Response(json_encode([$chapter, $index]));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
   }
 
-  #[Route('/', methods: ['POST'])]
+  #[Route('/LASTCHAPTER', methods: ['POST'])]
   function LastChapter(Request $request)
   {
-    $source = (string)$request->data[0];
-    $index = (int)$request->data[1];
-    $total = (int)$request->data[2];
+    $source = (string)$request->get('currentSource');
+    $index = (int)$request->get('index');
+    $total = (int)$request->get('total');
+
     if($index > 0) $index--;
-    $model = new ModelLibrary();
+
+    $model = new LibraryModel();
     $chapter = $model->GetChapter($source, $index);
-    return [$chapter, $index];
+
+    $response = new Response(json_encode([$chapter, $index]));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
+    
+    // $source = (string)$request->data[0];
+    // $index = (int)$request->data[1];
+    // $total = (int)$request->data[2];
+    // if($index > 0) $index--;
+    // $model = new LibraryModel();
+    // $chapter = $model->GetChapter($source, $index);
+    // return [$chapter, $index];
   }
 
-  #[Route('/', methods: ['POST'])]
+  #[Route('/NEXTCHAPTER', methods: ['POST'])]
   function NextChapter(Request $request)
   {
-    $source = (string)$request->data[0];
-    $index = (int)$request->data[1];
-    $total = (int)$request->data[2];
+    $source = (string)$request->get('currentSource');
+    $index = (int)$request->get('index');
+    $total = (int)$request->get('total');
+
     if($index < $total) $index++;
-    $model = new ModelLibrary();
+
+    $model = new LibraryModel();
     $chapter = $model->GetChapter($source, $index);
-    return [$chapter, $index];
+
+    $response = new Response(json_encode([$chapter, $index]));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
+
+    // $source = (string)$request->data[0];
+    // $index = (int)$request->data[1];
+    // $total = (int)$request->data[2];
+    // if($index < $total) $index++;
+    // $model = new LibraryModel();
+    // $chapter = $model->GetChapter($source, $index);
+    // return [$chapter, $index];
   }
 }

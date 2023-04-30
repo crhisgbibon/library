@@ -32,7 +32,7 @@
         <select id="chapterSelect" class="w-2/6 mx-2 flex justify-center items-center"></select>
         <button id="nextChapter" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/chevronRight.svg"></button>
         <button id="loadSelected" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/download.svg"></button>
-        <button id="savePosition" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/5 h-3/5" src="./assets/save.svg"></button>
+        {# <button id="savePosition" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/5 h-3/5" src="./assets/save.svg"></button> #}
       </div>
     </div>
 
@@ -52,8 +52,7 @@
         <div id="triggerSelectFile" class="togglePanelSub max-w-xs w-full max-h-full overflow-y-scroll">
 
           {% for link in links %}
-            {{ link["title"] }}
-            <div class='makecurrents source w-10/12 mx-auto my-2 p-2 rounded-lg hover:bg-gray-100' data-value=`{{ link.link }}` data-author=`{{ link.author }}` data-genre=`{{ link.genre }}`>{{ link['title'] }}</div>
+            <div class='makecurrents source w-10/12 mx-auto my-2 p-2 rounded-lg hover:bg-gray-100' data-value="{{ link.link }}" data-author="{{ link.author }}" data-genre="{{ link.genre }}">{{ link['title'] }}</div>
           {% endfor %}
 
         </div>

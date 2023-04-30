@@ -1,8 +1,7 @@
-"use strict";
+'use strict';
 
-function CalculateVh()
-{
-  let vh = window.innerHeight * 0.01;
+function CalculateVh() {
+  const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', vh + 'px');
 }
 
@@ -10,223 +9,367 @@ window.addEventListener('DOMContentLoaded', CalculateVh);
 window.addEventListener('resize', CalculateVh);
 window.addEventListener('orientationchange', CalculateVh);
 
-const topControl = document.getElementById("topControl");
-const controls = document.getElementById("controls");
-const botControl = document.getElementById("botControl");
-const textDiv = document.getElementById("textDiv");
+const topControl: HTMLElement = <HTMLElement>(
+  document.getElementById('topControl')
+);
+const controls: HTMLElement = <HTMLElement>document.getElementById('controls');
+const botControl: HTMLElement = <HTMLElement>(
+  document.getElementById('botControl')
+);
+const textDiv: HTMLElement = <HTMLElement>document.getElementById('textDiv');
 
-const messageBoxHolder = document.getElementById("messageBoxHolder");
-messageBoxHolder.onclick = function() { TogglePanel(messageBoxHolder); };
-const messageBox = document.getElementById("messageBox");
+const messageBoxHolder: HTMLElement = <HTMLElement>(
+  document.getElementById('messageBoxHolder')
+);
+messageBoxHolder.onclick = function () {
+  TogglePanel(messageBoxHolder);
+};
+const messageBox: HTMLElement = <HTMLElement>(
+  document.getElementById('messageBox')
+);
 
-const libraryButton = document.getElementById("libraryButton");
-libraryButton.onclick = function(){ ToggleMenu(views, viewBs, 0); };
-const libraryMenu = document.getElementById("libraryMenu");
-libraryMenu.style.display = "none";
+const libraryButton: HTMLElement = <HTMLElement>(
+  document.getElementById('libraryButton')
+);
+libraryButton.onclick = function () {
+  ToggleMenu(views, viewBs, 0);
+};
+const libraryMenu: HTMLElement = <HTMLElement>(
+  document.getElementById('libraryMenu')
+);
+libraryMenu.style.display = 'none';
 
-const optionsButton = document.getElementById("optionsButton");
-optionsButton.onclick = function(){ ToggleMenu(views, viewBs, 1); };
-const settingsMenu = document.getElementById("settingsMenu");
-settingsMenu.style.display = "none";
+const optionsButton: HTMLElement = <HTMLElement>(
+  document.getElementById('optionsButton')
+);
+optionsButton.onclick = function () {
+  ToggleMenu(views, viewBs, 1);
+};
+const settingsMenu: HTMLElement = <HTMLElement>(
+  document.getElementById('settingsMenu')
+);
+settingsMenu.style.display = 'none';
 
 const views = [libraryMenu, settingsMenu];
 const viewBs = [libraryButton, optionsButton];
 
-const playButton = document.getElementById("playButton");
-playButton.onclick = function(){ PlayPauseResumeSpeech(); };
-const iPlay: HTMLImageElement = <HTMLImageElement>document.getElementById("iPlay");
-const stopButton = document.getElementById("stopButton");
-stopButton.onclick = function(){ StopSpeech(); };
-const locationNumber: HTMLInputElement = <HTMLInputElement>document.getElementById("locationNumber");
-locationNumber.onchange = function(){ locationIndex = parseInt(locationNumber.value); };
-
-const chapterSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("chapterSelect");
-const loadSelected: HTMLInputElement = <HTMLInputElement>document.getElementById("loadSelected");
-loadSelected.onclick = function(){ 
-  StopSpeech();
-  textArea.scrollTop = 0; 
-  LoadChapter("GETCHAPTER"); 
+const playButton: HTMLElement = <HTMLElement>(
+  document.getElementById('playButton')
+);
+playButton.onclick = function () {
+  PlayPauseResumeSpeech();
 };
-const lastChapter = document.getElementById("lastChapter");
-lastChapter.onclick = function(){ 
+const iPlay: HTMLImageElement = <HTMLImageElement>(
+  document.getElementById('iPlay')
+);
+const stopButton: HTMLElement = <HTMLElement>(
+  document.getElementById('stopButton')
+);
+stopButton.onclick = function () {
   StopSpeech();
-  textArea.scrollTop = 0; 
-  LoadChapter("LASTCHAPTER"); };
-const nextChapter = document.getElementById("nextChapter");
-nextChapter.onclick = function(){ 
-  StopSpeech()
-  textArea.scrollTop = 0; 
-  LoadChapter("NEXTCHAPTER"); 
+};
+const locationNumber: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('locationNumber')
+);
+locationNumber.onchange = function () {
+  locationIndex = parseInt(locationNumber.value);
 };
 
-const autoplayCheckbox = document.getElementById("autoplayCheckbox");
-autoplayCheckbox.onchange = function(){ autoplay = !autoplay; if(autoplay) MessageBox("Autoplay on."); else MessageBox("Autoplay off."); };
+const chapterSelect: HTMLSelectElement = <HTMLSelectElement>(
+  document.getElementById('chapterSelect')
+);
+const loadSelected: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('loadSelected')
+);
+loadSelected.onclick = function () {
+  StopSpeech();
+  textArea.scrollTop = 0;
+  LoadChapter('GETCHAPTER');
+};
+const lastChapter: HTMLElement = <HTMLElement>(
+  document.getElementById('lastChapter')
+);
+lastChapter.onclick = function () {
+  StopSpeech();
+  textArea.scrollTop = 0;
+  LoadChapter('LASTCHAPTER');
+};
+const nextChapter: HTMLElement = <HTMLElement>(
+  document.getElementById('nextChapter')
+);
+nextChapter.onclick = function () {
+  StopSpeech();
+  textArea.scrollTop = 0;
+  LoadChapter('NEXTCHAPTER');
+};
 
-const clearGenre = document.getElementById("clearGenre");
-clearGenre.onclick = function(){ FilterGenre(-1); };
-const clearAuthor = document.getElementById("clearAuthor");
-clearAuthor.onclick = function(){ FilterAuthor(-1); };
-let currentSourceDiv = document.getElementById("currentSourceDiv");
-let sources: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("source") as HTMLCollectionOf<HTMLElement>;
-let genres: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("genre") as HTMLCollectionOf<HTMLElement>;
-let authors: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("author") as HTMLCollectionOf<HTMLElement>;
+const autoplayCheckbox: HTMLElement = <HTMLElement>(
+  document.getElementById('autoplayCheckbox')
+);
+autoplayCheckbox.onchange = function () {
+  autoplay = !autoplay;
+  if (autoplay) MessageBox('Autoplay on.');
+  else MessageBox('Autoplay off.');
+};
 
-const toggleLibrary = document.getElementById("toggleLibrary");
-toggleLibrary.onclick = function(){ ToggleMenu(databasePanels, databasePanelBs, 0); };
-const toggleGenre = document.getElementById("toggleGenre");
-toggleGenre.onclick = function(){ ToggleMenu(databasePanels, databasePanelBs, 1); };
-const toggleAuthor = document.getElementById("toggleAuthor");
-toggleAuthor.onclick = function(){ ToggleMenu(databasePanels, databasePanelBs, 2); };
+const clearGenre: HTMLElement = <HTMLElement>(
+  document.getElementById('clearGenre')
+);
+clearGenre.onclick = function () {
+  FilterGenre(-1);
+};
+const clearAuthor: HTMLElement = <HTMLElement>(
+  document.getElementById('clearAuthor')
+);
+clearAuthor.onclick = function () {
+  FilterAuthor(-1);
+};
+let currentSourceDiv = document.getElementById('currentSourceDiv');
+const sources: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName(
+  'source'
+) as HTMLCollectionOf<HTMLElement>;
+const genres: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName(
+  'genre'
+) as HTMLCollectionOf<HTMLElement>;
+const authors: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName(
+  'author'
+) as HTMLCollectionOf<HTMLElement>;
 
-const selectDocumentPanel = document.getElementById("selectDocumentPanel");
-const genreFilterPanel = document.getElementById("genreFilterPanel");
-const genreAuthorPanel = document.getElementById("genreAuthorPanel");
-const databasePanels = [selectDocumentPanel, genreFilterPanel, genreAuthorPanel];
+const toggleLibrary: HTMLElement = <HTMLElement>(
+  document.getElementById('toggleLibrary')
+);
+toggleLibrary.onclick = function () {
+  ToggleMenu(databasePanels, databasePanelBs, 0);
+};
+const toggleGenre: HTMLElement = <HTMLElement>(
+  document.getElementById('toggleGenre')
+);
+toggleGenre.onclick = function () {
+  ToggleMenu(databasePanels, databasePanelBs, 1);
+};
+const toggleAuthor: HTMLElement = <HTMLElement>(
+  document.getElementById('toggleAuthor')
+);
+toggleAuthor.onclick = function () {
+  ToggleMenu(databasePanels, databasePanelBs, 2);
+};
+
+const selectDocumentPanel: HTMLElement = <HTMLElement>(
+  document.getElementById('selectDocumentPanel')
+);
+const genreFilterPanel: HTMLElement = <HTMLElement>(
+  document.getElementById('genreFilterPanel')
+);
+const genreAuthorPanel: HTMLElement = <HTMLElement>(
+  document.getElementById('genreAuthorPanel')
+);
+const databasePanels = [
+  selectDocumentPanel,
+  genreFilterPanel,
+  genreAuthorPanel,
+];
 const databasePanelBs = [toggleLibrary, toggleGenre, toggleAuthor];
-genreFilterPanel.style.display = "none";
-genreAuthorPanel.style.display = "none";
+genreFilterPanel.style.display = 'none';
+genreAuthorPanel.style.display = 'none';
 
-const loadFile = document.getElementById("loadFile");
-loadFile.onclick = function(){ if(currentSourceDiv === null) { MessageBox("Please select a file."); return; } LoadNewText(currentSourceDiv.dataset.value); };
+const loadFile: HTMLElement = <HTMLElement>document.getElementById('loadFile');
+loadFile.onclick = function () {
+  if (currentSourceDiv === null) return;
+  if (currentSourceDiv.dataset.value === null) {
+    MessageBox('Please select a file.');
+  } else {
+    const s = currentSourceDiv.dataset.value
+      ? currentSourceDiv.dataset.value.toString()
+      : '';
+    LoadNewText(s);
+  }
+};
 
-const volumeSlider: HTMLInputElement = <HTMLInputElement>document.getElementById("volumeSlider");
-volumeSlider.onchange = function(){ ChangeVolume(volumeSlider.value); };
+const volumeSlider: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('volumeSlider')
+);
+volumeSlider.onchange = function () {
+  ChangeVolume(parseFloat(volumeSlider.value));
+};
 
-const showVolume: HTMLInputElement = <HTMLInputElement>document.getElementById("showVolume");
-showVolume.onchange = function(){ ChangeVolume(showVolume.value); };
+const showVolume: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('showVolume')
+);
+showVolume.onchange = function () {
+  ChangeVolume(parseFloat(showVolume.value));
+};
 
-const rateSlider: HTMLInputElement = <HTMLInputElement>document.getElementById("rateSlider");
-rateSlider.onchange = function(){ ChangeRate(rateSlider.value); };
+const rateSlider: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('rateSlider')
+);
+rateSlider.onchange = function () {
+  ChangeRate(parseFloat(rateSlider.value));
+};
 
-const showRate: HTMLInputElement = <HTMLInputElement>document.getElementById("showRate");
-showRate.onchange = function(){ ChangeRate(showRate.value); };
+const showRate: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('showRate')
+);
+showRate.onchange = function () {
+  ChangeRate(parseFloat(showRate.value));
+};
 
-const voiceSelect: HTMLSelectElement = <HTMLSelectElement>document.getElementById("voiceSelect");
-voiceSelect.onchange = function(){ ChangeVoice(); };
+const voiceSelect: HTMLSelectElement = <HTMLSelectElement>(
+  document.getElementById('voiceSelect')
+);
+voiceSelect.onchange = function () {
+  ChangeVoice();
+};
 
-const fontSize: HTMLInputElement = <HTMLInputElement>document.getElementById("fontSize");
-fontSize.onchange = function(){ textArea.style.fontSize  = fontSize.value + "px"; };
+const fontSize: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('fontSize')
+);
+fontSize.onchange = function () {
+  textArea.style.fontSize = fontSize.value + 'px';
+};
 
-const fontStyle: HTMLInputElement = <HTMLInputElement>document.getElementById("fontStyle");
-fontStyle.onchange = function(){ textArea.style.fontFamily  = fontStyle.value; };
+const fontStyle: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('fontStyle')
+);
+fontStyle.onchange = function () {
+  textArea.style.fontFamily = fontStyle.value;
+};
 
-const textArea: HTMLInputElement = <HTMLInputElement>document.getElementById("textArea");
-textArea.onkeyup = function(){ FindTextEndNumber(); NewText(); }
-textArea.onblur = function(){ FindTextEndNumber(); NewText(); }
-textArea.ondblclick = function(){ ChangeLocationIndex(GetCaretPosition(textArea)); }
+const textArea: HTMLInputElement = <HTMLInputElement>(
+  document.getElementById('textArea')
+);
+textArea.onkeyup = function () {
+  FindTextEndNumber();
+  NewText();
+};
+textArea.onblur = function () {
+  FindTextEndNumber();
+  NewText();
+};
+textArea.ondblclick = function () {
+  ChangeLocationIndex(GetCaretPosition(textArea));
+};
 
-const hiddenText = document.getElementById("hiddenText");
+const hiddenText: HTMLElement = <HTMLElement>(
+  document.getElementById('hiddenText')
+);
 
 const speech = new SpeechSynthesisUtterance();
 
-let voices = [];
+let voices: SpeechSynthesisVoice[] = [];
 let playing = false;
-let locationIndex: number = 0;
+let locationIndex = 0;
 let savedText = '';
 let formattedText = '';
-let offset = 0;
-let currentSource = "";
+let currentSource = '';
 let autoplay = false;
 
-let timeOut = undefined;
+let timeOut: NodeJS.Timeout | null = null;
 let toggleView = false;
 
 ToggleMenu(databasePanels, databasePanelBs, 0);
 
-const makecurrents: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("makecurrents") as HTMLCollectionOf<HTMLElement>;
-for(let i = 0; i < makecurrents.length; i++) { makecurrents[i].onclick = function() { MakeCurrent(makecurrents[i]) } }
+const makecurrents: HTMLCollectionOf<HTMLElement> =
+  document.getElementsByClassName(
+    'makecurrents'
+  ) as HTMLCollectionOf<HTMLElement>;
+for (let i = 0; i < makecurrents.length; i++) {
+  makecurrents[i].onclick = function () {
+    MakeCurrent(makecurrents[i]);
+  };
+}
 
-const filtergenres: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("filtergenres") as HTMLCollectionOf<HTMLElement>;
-for(let i = 0; i < filtergenres.length; i++) { filtergenres[i].onclick = function() { FilterGenre(filtergenres[i]) } }
+const filtergenres: HTMLCollectionOf<HTMLElement> =
+  document.getElementsByClassName(
+    'filtergenres'
+  ) as HTMLCollectionOf<HTMLElement>;
+for (let i = 0; i < filtergenres.length; i++) {
+  filtergenres[i].onclick = function () {
+    FilterGenre(filtergenres[i]);
+  };
+}
 
-const filterauthors: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("filterauthors") as HTMLCollectionOf<HTMLElement>;
-for(let i = 0; i < filterauthors.length; i++) { filterauthors[i].onclick = function() { FilterAuthor(filterauthors[i]) } }
+const filterauthors: HTMLCollectionOf<HTMLElement> =
+  document.getElementsByClassName(
+    'filterauthors'
+  ) as HTMLCollectionOf<HTMLElement>;
+for (let i = 0; i < filterauthors.length; i++) {
+  filterauthors[i].onclick = function () {
+    FilterAuthor(filterauthors[i]);
+  };
+}
 
-function ToggleView()
-{
+function ToggleView() {
   toggleView = !toggleView;
-  if(toggleView)
-  {
-    topControl.style.display = "none";
-    controls.style.display = "none";
-    botControl.style.display = "none";
+  if (toggleView) {
+    topControl.style.display = 'none';
+    controls.style.display = 'none';
+    botControl.style.display = 'none';
 
-    textDiv.style.height = "calc(var(--vh) * 92)";
-    textDiv.style.maxHeight = "calc(var(--vh) * 92)";
+    textDiv.style.height = 'calc(var(--vh) * 92)';
+    textDiv.style.maxHeight = 'calc(var(--vh) * 92)';
 
-    libraryMenu.style.height = "calc(var(--vh) * 92)";
-    libraryMenu.style.maxHeight = "calc(var(--vh) * 92)";
+    libraryMenu.style.height = 'calc(var(--vh) * 92)';
+    libraryMenu.style.maxHeight = 'calc(var(--vh) * 92)';
 
-    settingsMenu.style.height = "calc(var(--vh) * 92)";
-    settingsMenu.style.maxHeight = "calc(var(--vh) * 92)";
-  }
-  else
-  {
-    topControl.style.display = "";
-    controls.style.display = "";
-    botControl.style.display = "";
+    settingsMenu.style.height = 'calc(var(--vh) * 92)';
+    settingsMenu.style.maxHeight = 'calc(var(--vh) * 92)';
+  } else {
+    topControl.style.display = '';
+    controls.style.display = '';
+    botControl.style.display = '';
 
-    textDiv.style.height = "calc(var(--vh) * 77)";
-    textDiv.style.maxHeight = "calc(var(--vh) * 77)";
+    textDiv.style.height = 'calc(var(--vh) * 77)';
+    textDiv.style.maxHeight = 'calc(var(--vh) * 77)';
 
-    libraryMenu.style.height = "calc(var(--vh) * 77)";
-    libraryMenu.style.maxHeight = "calc(var(--vh) * 77)";
+    libraryMenu.style.height = 'calc(var(--vh) * 77)';
+    libraryMenu.style.maxHeight = 'calc(var(--vh) * 77)';
 
-    settingsMenu.style.height = "calc(var(--vh) * 77)";
-    settingsMenu.style.maxHeight = "calc(var(--vh) * 77)";
+    settingsMenu.style.height = 'calc(var(--vh) * 77)';
+    settingsMenu.style.maxHeight = 'calc(var(--vh) * 77)';
   }
 }
 
-function ToggleMenu(array, buttons, number)
-{
-  for(let i = 0; i < array.length; i++)
-  {
-    if(i === number)
-    {
-      if(array === databasePanels)
-      {
-        buttons[i].style.backgroundColor = "var(--foregroundLight)";
-        buttons[i].style.color = "var(--grey)";
+function ToggleMenu(
+  array: HTMLElement[],
+  buttons: HTMLElement[],
+  number: number
+) {
+  for (let i = 0; i < array.length; i++) {
+    if (i === number) {
+      if (array === databasePanels) {
+        buttons[i].style.backgroundColor = 'var(--foregroundLight)';
+        buttons[i].style.color = 'var(--grey)';
+      } else if (array === views) {
+        buttons[i].style.backgroundColor = 'var(--grey)';
       }
-      else if(array === views)
-      {
-        buttons[i].style.backgroundColor = "var(--grey)";
+      if (array[i].style.display === '' && array !== databasePanels) {
+        buttons[i].style.backgroundColor = 'var(--background)';
+        array[i].style.display = 'none';
+      } else {
+        array[i].style.display = '';
       }
-      if(array[i].style.display === "" && array !== databasePanels)
-      {
-        buttons[i].style.backgroundColor = "var(--background)";
-        array[i].style.display = "none";
+    } else {
+      if (array === databasePanels) {
+        buttons[i].style.backgroundColor = 'var(--grey)';
+        buttons[i].style.color = 'var(--foregroundLight)';
+      } else if (array === views) {
+        buttons[i].style.backgroundColor = 'var(--background)';
       }
-      else
-      {
-        array[i].style.display = "";
-      }
-    }
-    else
-    {
-      if(array === databasePanels)
-      {
-        buttons[i].style.backgroundColor = "var(--grey)";
-        buttons[i].style.color = "var(--foregroundLight)";
-      }
-      else if(array === views)
-      {
-        buttons[i].style.backgroundColor = "var(--background)";
-      }
-      array[i].style.display = "none";
+      array[i].style.display = 'none';
     }
   }
 }
 
-function PlayPauseResumeSpeech()
-{
-  if(!playing)
-  {
-    speech.lang = "en";
+function PlayPauseResumeSpeech() {
+  if (!playing) {
+    speech.lang = 'en';
 
-    if(hiddenText.innerText === null || hiddenText.innerText === "" || hiddenText.innerText === undefined)
-    {
-      MessageBox("Please provide text to play.");
+    if (
+      hiddenText.innerText === null ||
+      hiddenText.innerText === '' ||
+      hiddenText.innerText === undefined
+    ) {
+      MessageBox('Please provide text to play.');
       return;
     }
 
@@ -234,34 +377,28 @@ function PlayPauseResumeSpeech()
     textArea.disabled = true;
 
     window.speechSynthesis.speak(speech);
-    iPlay.src = "/play.svg";
+    iPlay.src = './assets/play.svg';
     playing = true;
-  }
-  else if(playing && !window.speechSynthesis.paused)
-  {
+  } else if (playing && !window.speechSynthesis.paused) {
     window.speechSynthesis.pause();
     textArea.value = formattedText;
     textArea.disabled = false;
-    iPlay.src = "/play.svg";
-  }
-  else if(playing && window.speechSynthesis.paused)
-  {
+    iPlay.src = './assets/play.svg';
+  } else if (playing && window.speechSynthesis.paused) {
     speech.text = hiddenText.innerText.substring(locationIndex);
     window.speechSynthesis.resume();
     textArea.disabled = true;
-    iPlay.src = "/pause.svg";
+    iPlay.src = './assets/pause.svg';
   }
 }
 
-function ChangeLocationIndex(newValue)
-{
+function ChangeLocationIndex(newValue: number) {
   locationIndex = newValue;
   locationNumber.value = locationIndex.toString();
 }
 
-function GetCaretPosition(ctrl)
-{
-  // IE < 9 Support 
+function GetCaretPosition(ctrl: HTMLInputElement) {
+  // IE < 9 Support
   // if(document.selection)
   // {
   //   ctrl.focus();
@@ -271,27 +408,17 @@ function GetCaretPosition(ctrl)
   //   let start = range.text.length - rangelen;
   //   return start + rangelen;
   // }// IE >=9 and other browsers
-  // else 
-  
-  if(ctrl.selectionStart || ctrl.selectionStart == '0')
-  {
-    return ctrl.selectionEnd;
-  }
-  else
-  {
-    return 0;
-  }
+  // else
+
+  return ctrl.selectionStart ? <number>ctrl.selectionStart : 0;
 }
 
-function FindTextEndNumber()
-{
+function FindTextEndNumber() {
   locationNumber.max = hiddenText.innerText.length.toString();
 }
 
-function NewText()
-{
-  if(!playing)
-  {
+function NewText() {
+  if (!playing) {
     savedText = textArea.value;
     formattedText = textArea.value;
     hiddenText.innerText = savedText;
@@ -300,47 +427,41 @@ function NewText()
   }
 }
 
-function StopSpeech()
-{
+function StopSpeech() {
   playing = false;
   window.speechSynthesis.cancel();
   textArea.value = formattedText.toString();
   locationIndex = 0;
   locationNumber.value = locationIndex.toString();
   textArea.disabled = false;
-  iPlay.src = "/play.svg";
+  iPlay.src = './assets/play.svg';
 }
 
-function ChangeVolume(volume)
-{
+function ChangeVolume(volume: number) {
   speech.volume = volume;
-  volumeSlider.value = volume;
-  showVolume.value = volume;
+  volumeSlider.value = volume.toString();
+  showVolume.value = volume.toString();
 }
 
-function ChangeRate(rate)
-{
+function ChangeRate(rate: number) {
   speech.rate = rate;
-  rateSlider.value = rate;
-  showRate.value = rate;
+  rateSlider.value = rate.toString();
+  showRate.value = rate.toString();
 }
 
-function ChangeVoice()
-{
+function ChangeVoice() {
   speech.voice = voices[voiceSelect.options.selectedIndex];
 }
 
 window.speechSynthesis.onvoiceschanged = () => {
-
   voices.length = 0;
   voices = speechSynthesis.getVoices();
   speech.voice = voices[0];
 
-  if(voices.length == 0) return;
+  if (voices.length == 0) return;
 
-  for(let i = 0; i < voices.length; i++)
-  {
-    let newOption = document.createElement("option");
+  for (let i = 0; i < voices.length; i++) {
+    const newOption = document.createElement('option');
     newOption.innerHTML = voices[i].name;
     newOption.id = i.toString();
     voiceSelect.appendChild(newOption);
@@ -349,170 +470,144 @@ window.speechSynthesis.onvoiceschanged = () => {
 
 window.onbeforeunload = function () {
   StopSpeech();
-}
+};
 
-speech.onboundary = function(event)
-{
-  let wordPos = GetWordPos(hiddenText.innerText, event.charIndex);
-  if(isFinite(wordPos[0]))
-  {
-    let wordLen = formattedText.length;
-    let wordPerCent = ( 100 / wordLen ) * wordPos[0];
+speech.onboundary = function (event) {
+  const wordPos = <Array<number>>(
+    GetWordPos(hiddenText.innerText, event.charIndex)
+  );
+  if (isFinite(wordPos[0])) {
+    const wordLen = formattedText.length;
+    const wordPerCent = (100 / wordLen) * wordPos[0];
     locationIndex = wordPos[0];
     locationNumber.value = wordPerCent.toFixed(2);
   }
 
-  if(!window.speechSynthesis.paused)
-  {
-    textArea.value = formattedText.substring(0, (wordPos[0] + wordPos[1]));
+  if (!window.speechSynthesis.paused) {
+    textArea.value = formattedText.substring(0, wordPos[0] + wordPos[1]);
     textArea.scrollTop = textArea.scrollHeight;
   }
 };
 
-speech.addEventListener('end', function(event)
-{
+speech.addEventListener('end', function () {
   StopSpeech();
 });
 
-function GetWordPos(str, pos)
-{
+function GetWordPos(str: string, pos: number) {
   str = String(str);
   pos = Number(pos) >>> 0;
 
-  let result = [];
-  let left = str.slice(0, pos + 1).search(/\S+$/);
-  let right = str.slice(pos).search(/\s/);
+  const result: number[] = [];
+  const left = str.slice(0, pos + 1).search(/\S+$/);
+  const right = str.slice(pos).search(/\s/);
   result.push(left);
-  if(right < 0)
-  {
+  if (right < 0) {
     return str.slice(left);
   }
   result.push(right);
   return result;
 }
 
-function FilterGenre(filter)
-{
-  let genreFilter = "";
-  if(filter !== -1) genreFilter = filter.innerHTML;
-  for(let i = 0; i < sources.length; i++)
-  {
-    if(filter === -1) { sources[i].style.display = ""; continue; }
-    if(genreFilter != sources[i].dataset.genre)
-    {
-      sources[i].style.display = "none";
-      if(currentSourceDiv === sources[i]) currentSourceDiv = null;
-    }
-    else sources[i].style.display = "";
-  }
-  for(let i = 0; i < genres.length; i++)
-  {
-    if(filter === -1)
-    { 
-      genres[i].style.backgroundColor = "var(--white)";
-      genres[i].style.color = "";
+function FilterGenre(filter: number | HTMLElement) {
+  let genreFilter = '';
+  if (typeof filter === 'object') genreFilter = filter.innerHTML;
+  for (let i = 0; i < sources.length; i++) {
+    if (filter === -1) {
+      sources[i].style.display = '';
       continue;
     }
-    if(filter === genres[i])
-    {
-      genres[i].style.backgroundColor = "var(--foregroundLight)";
-      genres[i].style.color = "var(--background)";
+    if (genreFilter != sources[i].dataset.genre) {
+      sources[i].style.display = 'none';
+      if (currentSourceDiv === sources[i]) currentSourceDiv = null;
+    } else sources[i].style.display = '';
+  }
+  for (let i = 0; i < genres.length; i++) {
+    if (filter === -1) {
+      genres[i].style.backgroundColor = 'var(--white)';
+      genres[i].style.color = '';
+      continue;
     }
-    else
-    {
-      genres[i].style.backgroundColor = "var(--white)";
-      genres[i].style.color = "";
+    if (filter === genres[i]) {
+      genres[i].style.backgroundColor = 'var(--foregroundLight)';
+      genres[i].style.color = 'var(--background)';
+    } else {
+      genres[i].style.backgroundColor = 'var(--white)';
+      genres[i].style.color = '';
     }
   }
 }
 
-function FilterAuthor(filter)
-{
-  let authorFilter = "";
-  if(filter !== -1) authorFilter = filter.innerHTML;
-  for(let i = 0; i < sources.length; i++)
-  {
-    if(filter === -1) { sources[i].style.display = ""; continue; }
-    if(authorFilter != sources[i].dataset.author)
-    {
-      sources[i].style.display = "none";
-      if(currentSourceDiv === sources[i]) currentSourceDiv = null;
-    }
-    else sources[i].style.display = "";
-  }
-  for(let i = 0; i < authors.length; i++)
-  {
-    if(filter === -1)
-    { 
-      authors[i].style.backgroundColor = "var(--white)";
-      authors[i].style.color = "";
+function FilterAuthor(filter: number | HTMLElement) {
+  let authorFilter = '';
+  if (typeof filter === 'object') authorFilter = filter.innerHTML;
+  for (let i = 0; i < sources.length; i++) {
+    if (filter === -1) {
+      sources[i].style.display = '';
       continue;
     }
-    if(filter === authors[i])
-    {
-      authors[i].style.backgroundColor = "var(--foregroundLight)";
-      authors[i].style.color = "var(--background)";
+    if (authorFilter != sources[i].dataset.author) {
+      sources[i].style.display = 'none';
+      if (currentSourceDiv === sources[i]) currentSourceDiv = null;
+    } else sources[i].style.display = '';
+  }
+  for (let i = 0; i < authors.length; i++) {
+    if (filter === -1) {
+      authors[i].style.backgroundColor = 'var(--white)';
+      authors[i].style.color = '';
+      continue;
     }
-    else
-    {
-      authors[i].style.backgroundColor = "var(--white)";
-      authors[i].style.color = "";
+    if (filter === authors[i]) {
+      authors[i].style.backgroundColor = 'var(--foregroundLight)';
+      authors[i].style.color = 'var(--background)';
+    } else {
+      authors[i].style.backgroundColor = 'var(--white)';
+      authors[i].style.color = '';
     }
   }
 }
 
-function MakeCurrent(source)
-{
+function MakeCurrent(source: HTMLElement) {
   currentSourceDiv = source;
-  for(let i = 0; i < sources.length; i++)
-  {
-    if(source === sources[i])
-    {
-      sources[i].style.backgroundColor = "var(--foregroundLight)";
-      sources[i].style.color = "var(--background)";
-    }
-    else
-    {
-      sources[i].style.backgroundColor = "var(--white)";
-      sources[i].style.color = "";
+  for (let i = 0; i < sources.length; i++) {
+    if (source === sources[i]) {
+      sources[i].style.backgroundColor = 'var(--foregroundLight)';
+      sources[i].style.color = 'var(--background)';
+    } else {
+      sources[i].style.backgroundColor = 'var(--white)';
+      sources[i].style.color = '';
     }
   }
 }
 
-function LoadNewText(source)
-{
+function LoadNewText(source: string) {
   ToggleMenu(views, viewBs, -1);
-  LoadText(source, "GETTEXT");
+  LoadText(source, 'GETTEXT');
 }
 
-function LoadText(source, trigger)
-{
+function LoadText(source: string, trigger: string) {
   currentSource = source;
-  $.ajax(
-  {
-    method: "POST",
+  console.log(currentSource);
+  $.ajax({
+    method: 'POST',
     url: trigger,
-    headers:
-    {
-
+    headers: {},
+    data: {
+      currentSource,
     },
-    data:
-    {
-      currentSource
-    },
-    success:function(result)
-    {
-      if(trigger === "GETTEXT")
-      {
-        let volumes = result[0];
-        let chapters = result[1];
+    success: function (result) {
+      console.log(result);
+      // result = JSON.parse(result);
+      // console.log(result);
+      // return;
+      if (trigger === 'GETTEXT') {
+        const volumes = result[0];
+        const chapters = result[1];
 
-        if(chapters.length != volumes.length) return;
+        if (chapters.length != volumes.length) return;
         chapterSelect.options.length = 0;
         chapterSelect.dataset.total = (chapters.length - 1).toString();
-        for(let i = 0; i < chapters.length; i++)
-        {
-          let opt = document.createElement('option');
+        for (let i = 0; i < chapters.length; i++) {
+          const opt = document.createElement('option');
           opt.dataset.number = i.toString();
           opt.dataset.volume = volumes[i];
           opt.dataset.chapter = chapters[i];
@@ -521,91 +616,83 @@ function LoadText(source, trigger)
         }
       }
     },
-    error:function(result)
-    {
-
-    }
+    error(result) {
+      console.log(result);
+    },
   });
 }
 
-function LoadChapter(trigger)
-{
-  if(currentSource === null || currentSource === "" || currentSource === undefined)
-  {
-    MessageBox("Please select a text to load.");
+function LoadChapter(trigger: string) {
+  if (
+    currentSource === null ||
+    currentSource === '' ||
+    currentSource === undefined
+  ) {
+    MessageBox('Please select a text to load.');
     return;
   }
-  let data = [currentSource, 
-    chapterSelect.options[chapterSelect.selectedIndex].dataset.number,
-    chapterSelect.dataset.total
-  ];
-  $.ajax(
-  {
-    method: "POST",
+  const index = chapterSelect.options[chapterSelect.selectedIndex].dataset.number;
+  const total = chapterSelect.dataset.total;
+  $.ajax({
+    method: 'POST',
     url: trigger,
-    headers:
-    {
-
+    headers: {},
+    data: {
+      currentSource,
+      index,
+      total
     },
-    data:
-    {
-      data:data
-    },
-    success:function(result)
-    {
+    success: function (result) {
+      console.log(result);
       formattedText = result[0][0];
       savedText = result[0][1];
       textArea.value = formattedText;
       hiddenText.innerText = savedText;
       chapterSelect.selectedIndex = result[1];
-      if(autoplay)
-      {
+      if (autoplay) {
         PlayPauseResumeSpeech();
       }
     },
-    error:function(result)
-    {
-
+    error: function(result){
+      console.log(result);
     }
   });
 }
 
-function TogglePanel(panel)
-{
-  if(panel.style.display == "none") panel.style.display = "";
-  else panel.style.display = "none";
+function TogglePanel(panel: HTMLElement) {
+  if (panel.style.display == 'none') panel.style.display = '';
+  else panel.style.display = 'none';
 }
 
-function MessageBox(message)
-{
+function MessageBox(message: string) {
   messageBox.innerHTML = message;
-  if(messageBoxHolder.style.display === "none") TogglePanel(messageBoxHolder);
+  if (messageBoxHolder.style.display === 'none') TogglePanel(messageBoxHolder);
   AnimatePop(messageBox);
-  if(timeOut != null) clearTimeout(timeOut);
+  if (timeOut != null) clearTimeout(timeOut);
   timeOut = setTimeout(AutoOff, 2500);
 }
 
-function AnimatePop(panel)
-{
-  panel.animate([
-    { transform: 'scale(110%, 110%)'},
-    { transform: 'scale(109%, 109%)'},
-    { transform: 'scale(108%, 108%)'},
-    { transform: 'scale(107%, 107%)'},
-    { transform: 'scale(106%, 106%)'},
-    { transform: 'scale(105%, 105%)'},
-    { transform: 'scale(104%, 104%)'},
-    { transform: 'scale(103%, 103%)'},
-    { transform: 'scale(102%, 102%)'},
-    { transform: 'scale(101%, 101%)'},
-    { transform: 'scale(100%, 100%)'}],
+function AnimatePop(panel: HTMLElement) {
+  panel.animate(
+    [
+      { transform: 'scale(110%, 110%)' },
+      { transform: 'scale(109%, 109%)' },
+      { transform: 'scale(108%, 108%)' },
+      { transform: 'scale(107%, 107%)' },
+      { transform: 'scale(106%, 106%)' },
+      { transform: 'scale(105%, 105%)' },
+      { transform: 'scale(104%, 104%)' },
+      { transform: 'scale(103%, 103%)' },
+      { transform: 'scale(102%, 102%)' },
+      { transform: 'scale(101%, 101%)' },
+      { transform: 'scale(100%, 100%)' },
+    ],
     {
       duration: 100,
     }
   );
 }
 
-function AutoOff()
-{
-  messageBoxHolder.style.display = "none";
+function AutoOff() {
+  messageBoxHolder.style.display = 'none';
 }

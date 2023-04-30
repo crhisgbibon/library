@@ -7,6 +7,9 @@ namespace App\Entity;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Finder\Finder;
 
 class LibraryModel extends AbstractController
 {
@@ -27,11 +30,16 @@ class LibraryModel extends AbstractController
 
     public function GetFiles(string $source)
     {
+      $debug = [];
       $volumes = [];
       $chapters = [];
-      $fileList = Storage::files($source);
-      foreach($fileList as $filePath)
-      {
+      $finder = new Finder();
+      $finder->files()->in(__DIR__ . $source);
+
+      array_push($debug, $source);
+      foreach ($finder as $file) {
+        $filePath = $file->getPathname();
+        array_push($debug, $filePath);
         $position = strrpos($filePath, "/", -1);
         $position++;
         $filenameWithExtension = substr($filePath, $position);
@@ -49,12 +57,16 @@ class LibraryModel extends AbstractController
 
     public function GetChapter(string $source, int $index)
     {
-      $fileList = Storage::files($source);
-      $text = Storage::get($fileList[$index]);
-      $text = str_replace("_", '', $text);
-      $text = str_replace("*", '', $text);
-      $formattedText = str_replace("\n", ' ', $text);
-      $formattedText = str_replace("\r", ' ', $formattedText);
-      return [$text, $formattedText];
+      $finder = new Finder();
+      $finder->files()->in(__DIR__ . $source);
+
+      foreach ($finder as $file) {
+        $text = $file->getContents();
+        $text = str_replace("_", '', $text);
+        $text = str_replace("*", '', $text);
+        $formattedText = str_replace("\n", ' ', $text);
+        $formattedText = str_replace("\r", ' ', $formattedText);
+        return [$text, $formattedText];
+    }
     }
 }
