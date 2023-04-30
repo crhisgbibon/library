@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const fileLoaderConfig = require('./file-loader.config');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -65,7 +66,7 @@ Encore
     //.enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()
@@ -78,30 +79,15 @@ Encore
     //.autoProvidejQuery()
 
     .enablePostCssLoader()
+
+    .configureLoaderRule('images', rule => {
+      rule
+        .test(/\.(png|jpe?g|gif|svg)$/)
+        .use('file-loader')
+        .loader('file-loader')
+        .options(fileLoaderConfig.options)
+        .end();
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'images/',
-            },
-          },
-        ],
-      },
-    ],
-  },
-};
-
-
-
-
-
