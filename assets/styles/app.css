@@ -2,5 +2,261 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+:root {
+  --grey: rgba(226, 232, 237, 1);
+  --white: rgba(255, 255, 255, 1);
+
+  --foregroundLight: rgba(50, 50, 50, 1);
+
+  --background: var(--white);
+  --foreground: var(--foregroundLight);
+}
+
+::selection {
+  background: var(--grey);
+}
+
+#messageBoxHolder {
+  position: absolute;
+  z-index: 20;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(var(--vh) * 10);
+  bottom: calc(var(--vh) * 20);
+}
+
+#messageBox {
+  background-color: var(--foreground);
+  color: var(--background);
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  max-height: 100px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#viewButton:hover {
+  transform: scale(110%, 110%);
+}
+
+#viewButton:active {
+  transform: scale(90%, 90%);
+}
+
+.sliderDiv {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 10vh;
+  box-sizing: border-box;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+  border-left: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#volumeSliderDiv input[type='range'] {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 5vh;
+  box-sizing: border-box;
+  border-bottom: 1px solid;
+  border-color: rgba(50, 50, 50, 1);
+}
+
+#volumeSliderDiv input[type='number'] {
+  display: block;
+  float: right;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 5vh;
+  width: 100%;
+}
+
+#rateSliderDiv input[type='range'] {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 5vh;
+  box-sizing: border-box;
+  border-bottom: 1px solid;
+  border-color: rgba(50, 50, 50, 1);
+}
+
+#rateSliderDiv input[type='number'] {
+  display: block;
+  float: right;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 5vh;
+  width: 100%;
+}
+
+#locationNumber {
+  height: 80%;
+  width: 100%;
+  max-width: 75px;
+  text-align: center;
+  border: 1px solid var(--grey);
+}
+
+#libraryMenu {
+  width: 100%;
+  height: calc(var(--vh) * 77.5);
+  max-height: calc(var(--vh) * 77.5);
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#libraryMenu label {
+  height: calc(var(--vh) * 5);
+  max-height: calc(var(--vh) * 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#libraryMenuToggles {
+  height: calc(var(--vh) * 5);
+  max-height: calc(var(--vh) * 5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#libraryMenuToggles button {
+  background-color: var(--grey);
+}
+
+#libraryMenuToggles button:hover {
+  transform: scale(110%, 110%);
+}
+
+#libraryMenuToggles button:active {
+  transform: scale(90%, 90%);
+}
+
+#settingsMenu {
+  width: 100%;
+  height: calc(var(--vh) * 77.5);
+  max-height: calc(var(--vh) * 77.5);
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#controls button:hover {
+  transform: scale(110%, 110%);
+}
+
+#controls button:active {
+  transform: scale(90%, 90%);
+}
+
+#footer button:hover {
+  transform: scale(110%, 110%);
+}
+
+#footer button:active {
+  transform: scale(90%, 90%);
+}
+
+#chapterSelect {
+  height: 80%;
+  max-width: 150px;
+  text-align: center;
+  border: 1px solid var(--grey);
+}
+
+.togglePanels {
+  height: calc(var(--vh) * 77);
+  max-height: calc(var(--vh) * 77);
+}
+
+.togglePanelSub {
+  height: calc(var(--vh) * 55);
+  max-height: calc(var(--vh) * 55);
+}
+
+.panelToggle:hover {
+  transform: scale(110%, 110%);
+}
+
+.panelToggle:active {
+  transform: scale(90%, 90%);
+}
+
+#textDiv {
+  width: 100%;
+  max-width: 900px;
+  height: calc(var(--vh) * 77);
+  max-height: calc(var(--vh) * 77);
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textAreas {
+  font-size: 16px;
+  resize: none;
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0;
+  padding: 12px;
+  border: none;
+  outline: none;
+  height: 95%;
+  width: 90%;
+}
+
+#textArea {
+  text-align: left;
+  overflow-y: auto;
+}
+
+.clearButtons:hover {
+  transform: scale(110%, 110%);
+}
+
+.clearButtons:active {
+  transform: scale(90%, 90%);
+}
+
+#botControlDiv button:hover {
+  transform: scale(110%, 110%);
+}
+
+#botControlDiv button:active {
+  transform: scale(90%, 90%);
 }

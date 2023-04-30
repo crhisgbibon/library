@@ -10,7 +10,6 @@
     <meta name="description" content="" />
 
     <link href="https://cdn.jsdelivr.net/npm/modern-normalize@v1.1.0/modern-normalize.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link rel="icon" href="favicon.ico">
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
@@ -28,11 +27,11 @@
 
     <div name="header" class="flex flex-row justify-center items-center" style="height:calc(var(--vh) * 7.5);max-height:calc(var(--vh) * 7.5);">
       <div class="flex w-full flex-row justify-center items-center mx-auto max-w-sm" id="controls" style="height:calc(var(--vh) * 7.5);max-height:calc(var(--vh) * 7.5);">
-        <button id="lastChapter" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/chevronLeft.svg"></button>
+        <button id="lastChapter" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="{{ asset('build/images/chevronLeft.svg') }}"></button>
         <select id="chapterSelect" class="w-2/6 mx-2 flex justify-center items-center"></select>
-        <button id="nextChapter" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/chevronRight.svg"></button>
-        <button id="loadSelected" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/download.svg"></button>
-        {# <button id="savePosition" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/5 h-3/5" src="./assets/save.svg"></button> #}
+        <button id="nextChapter" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="{{ asset('build/images/chevronRight.svg') }}"></button>
+        <button id="loadSelected" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="{{ asset('build/images/download.svg') }}"></button>
+        {# <button id="savePosition" class="w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/5 h-3/5" src="{{ asset('build/images/save.svg') }}"></button> #}
       </div>
     </div>
 
@@ -57,14 +56,14 @@
 
         </div>
         <div class="mx-auto flex flex-col justify-center items-center">
-          <button id="loadFile" class="max-w-xs">Load</button>
+          <button id="loadFile" class="max-w-xs rounded-lg p-2 m-2 drop-shadow-sm hover:scale-110 active:scale-90" style="background-color: var(--grey); color: var(--foregroundLight);">Load</button>
         </div>
       </div>
 
       <div id="genreFilterPanel" class="togglePanels mx-auto flex flex-col justify-start items-center w-full max-w-xs">
         <div class="mx-auto flex flex-row justify-center items-center w-full">
           <label for="triggerSelectGenre">Clear Filter</label>
-          <button id="clearGenre" class="clearButtons w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/x.svg"></button>
+          <button id="clearGenre" class="clearButtons w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="{{ asset('build/images/x.svg') }}"></button>
         </div>
         <div id="triggerSelectGenre" class="togglePanelSub max-w-xs w-full max-h-full overflow-y-scroll">
 
@@ -78,7 +77,7 @@
       <div id="genreAuthorPanel" class="togglePanels mx-auto flex flex-col justify-start items-center w-full max-w-xs">
         <div class="mx-auto flex flex-row justify-center items-center w-full">
           <label for="triggerSelectAuthor">Clear Filter</label>
-          <button id="clearAuthor" class="clearButtons w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="./assets/x.svg"></button>
+          <button id="clearAuthor" class="clearButtons w-1/6 h-full mx-4 flex justify-center items-center"><img class="w-3/4 h-3/4" src="{{ asset('build/images/x.svg') }}"></button>
         </div>
         <div id="triggerSelectAuthor" class="togglePanelSub max-w-xs w-full max-h-full overflow-y-scroll">
 
@@ -95,21 +94,21 @@
       <label for="settingsMenu" class="my-2 font-bold">Settings</label>
       <div class="mx-auto my-2 flex flex-col justify-center items-center">
         <label for="loadFile" class="my-2">Select Voice</label>
-        <select id="voiceSelect" class="my-2 max-w-xs"></select>
+        <select id="voiceSelect" class="my-2 max-w-xs border border-black rounded-lg p-2 drop-shadow-sm"></select>
       </div>
       <div class="mx-auto my-2 flex flex-col justify-center items-center">
         <label for="loadFile" class="my-2">Volume</label>
-        <input type="range" min="0" max="1" step="0.05" value="1" class="slider my-2 max-w-xs" id="volumeSlider">
-        <input type="number" id="showVolume" min="0" max="1" step="0.05" value = "1" class="my-2">
+        <input type="range" min="0" max="1" step="0.05" value="1" class="slider my-2 max-w-xs border border-black rounded-lg p-2 drop-shadow-sm" id="volumeSlider">
+        <input type="number" id="showVolume" min="0" max="1" step="0.05" value = "1" class="my-2 border border-black rounded-lg p-2 drop-shadow-sm">
       </div>
       <div class="mx-auto my-2 flex flex-col justify-center items-center">
         <label for="loadFile" class="my-2">Speech Speed</label>
-        <input type="range" min="0.1" max="10" step="0.1" value="1" class="slider my-2 max-w-xs" id="rateSlider">
-        <input type="number" id="showRate" value = "1" min="0.1" max="10" step="0.1" class="my-2">
+        <input type="range" min="0.1" max="10" step="0.1" value="1" class="slider my-2 max-w-xs border border-black rounded-lg p-2 drop-shadow-sm" id="rateSlider">
+        <input type="number" id="showRate" value = "1" min="0.1" max="10" step="0.1" class="my-2 border border-black rounded-lg p-2 drop-shadow-sm">
       </div>
       <div class="mx-auto my-2 flex flex-col justify-center items-center">
         <label for="fontSize" class="my-2">Font Size</label>
-        <select id="fontSize" class="my-2 max-w-xs">
+        <select id="fontSize" class="my-2 max-w-xs border border-black rounded-lg p-2 drop-shadow-sm">
           <option value=8>8</option>
           <option value=10>10</option>
           <option value=12>12</option>
@@ -123,7 +122,7 @@
       </div>
       <div class="mx-auto my-2 flex flex-col justify-center items-center">
         <label for="fontStyle" class="my-2">Font Style</label>
-        <select id="fontStyle" class="my-2 max-w-xs">
+        <select id="fontStyle" class="my-2 max-w-xs border border-black rounded-lg p-2 drop-shadow-sm">
           <option value="Arial, sans-serif">Arial</option>
           <option value="'Brush Script MT', cursive">Brush Script</option>
           <option value="'Courier New', monospace">Courier New</option>
@@ -131,7 +130,7 @@
           <option value="Georgia, serif">Georgia</option>
           <option value="Helvetica">Helvetica</option>
           <option value="Nunito" selected>Nunito</option>
-          <option value="Tahoma, sans-serif">Tahoma</option>
+          <option value="Tahoma, sans-serif">Tahoma</option>drop-shadow-sm
           <option value="'Times New Roman', serif">Times New Roman</option>
           <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
           <option value="Verdana, sans-serif">Verdana</option>
@@ -139,7 +138,7 @@
       </div>
       <div class="mx-auto my-2 flex flex-col justify-center items-center">
         <label for="autoplayCheckbox" class="my-2">Autoplay</label>
-        <input type="checkbox" id="autoplayCheckbox" class="rounded-lg w-4 h-4 mx-4 flex justify-center items-center"/>
+        <input type="checkbox" id="autoplayCheckbox" class="w-4 h-4 m-4 flex justify-center items-center border border-black rounded-lg p-2 drop-shadow-sm"/>
       </div>
     </div>
 
@@ -150,11 +149,11 @@
 
     <div name="footer" id="botControl" class="flex justify-center items-center box-border border-t border-gray-100" style="height:calc(var(--vh) * 7.5);max-height:calc(var(--vh) * 7.5);">
       <div class="flex w-full flex-row justify-center items-center mx-auto max-w-sm" id="botControlDiv" style="height:calc(var(--vh) * 7.5);max-height:calc(var(--vh) * 7.5);">
-        <button id="libraryButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img class="w-10/12 h-10/12" src="./assets/database.svg"></button>
-        <button id="optionsButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img class="w-10/12 h-10/12" src="./assets/options.svg"></button>
-        <button id="playButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img id="iPlay" class="w-10/12 h-10/12" src="./assets/play.svg"></button>
-        <input id="locationNumber" type="number" min="0" value="0" class="w-2/6 mx-2 flex justify-center items-center rounded-lg">
-        <button id="stopButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img class="w-10/12 h-10/12" src="./assets/stop.svg"></button>
+        <button id="libraryButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img class="w-10/12 h-10/12" src="{{ asset('build/images/database.svg') }}"></button>
+        <button id="optionsButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img class="w-10/12 h-10/12" src="{{ asset('build/images/options.svg') }}"></button>
+        <button id="playButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img id="iPlay" class="w-10/12 h-10/12" src="{{ asset('build/images/play.svg') }}"></button>
+        <input id="locationNumber" type="number" min="0" value="0" class="w-2/6 mx-2 flex justify-center items-center border border-black rounded-lg p-2 drop-shadow-sm">
+        <button id="stopButton" class="h-11/12 w-1/6 mx-4 flex justify-center items-center rounded-lg"><img class="w-10/12 h-10/12" src="{{ asset('build/images/stop.svg') }}"></button>
       </div>
     </div>
 

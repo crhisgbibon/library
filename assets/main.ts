@@ -1,5 +1,8 @@
 'use strict';
 
+const pause = require('./images/pause.svg');
+const play = require('./images/play.svg');
+
 function CalculateVh() {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', vh + 'px');
@@ -9,14 +12,14 @@ window.addEventListener('DOMContentLoaded', CalculateVh);
 window.addEventListener('resize', CalculateVh);
 window.addEventListener('orientationchange', CalculateVh);
 
-const topControl: HTMLElement = <HTMLElement>(
-  document.getElementById('topControl')
-);
-const controls: HTMLElement = <HTMLElement>document.getElementById('controls');
-const botControl: HTMLElement = <HTMLElement>(
-  document.getElementById('botControl')
-);
-const textDiv: HTMLElement = <HTMLElement>document.getElementById('textDiv');
+// const topControl: HTMLElement = <HTMLElement>(
+//   document.getElementById('topControl')
+// );
+// const controls: HTMLElement = <HTMLElement>document.getElementById('controls');
+// const botControl: HTMLElement = <HTMLElement>(
+//   document.getElementById('botControl')
+// );
+// const textDiv: HTMLElement = <HTMLElement>document.getElementById('textDiv');
 
 const messageBoxHolder: HTMLElement = <HTMLElement>(
   document.getElementById('messageBoxHolder')
@@ -264,8 +267,9 @@ let currentSource = '';
 let autoplay = false;
 
 let timeOut: NodeJS.Timeout | null = null;
-let toggleView = false;
+// let toggleView = false;
 
+ToggleMenu(views, viewBs, 0);
 ToggleMenu(databasePanels, databasePanelBs, 0);
 
 const makecurrents: HTMLCollectionOf<HTMLElement> =
@@ -298,36 +302,36 @@ for (let i = 0; i < filterauthors.length; i++) {
   };
 }
 
-function ToggleView() {
-  toggleView = !toggleView;
-  if (toggleView) {
-    topControl.style.display = 'none';
-    controls.style.display = 'none';
-    botControl.style.display = 'none';
+// function ToggleView() {
+//   toggleView = !toggleView;
+//   if (toggleView) {
+//     topControl.style.display = 'none';
+//     controls.style.display = 'none';
+//     botControl.style.display = 'none';
 
-    textDiv.style.height = 'calc(var(--vh) * 92)';
-    textDiv.style.maxHeight = 'calc(var(--vh) * 92)';
+//     textDiv.style.height = 'calc(var(--vh) * 92)';
+//     textDiv.style.maxHeight = 'calc(var(--vh) * 92)';
 
-    libraryMenu.style.height = 'calc(var(--vh) * 92)';
-    libraryMenu.style.maxHeight = 'calc(var(--vh) * 92)';
+//     libraryMenu.style.height = 'calc(var(--vh) * 92)';
+//     libraryMenu.style.maxHeight = 'calc(var(--vh) * 92)';
 
-    settingsMenu.style.height = 'calc(var(--vh) * 92)';
-    settingsMenu.style.maxHeight = 'calc(var(--vh) * 92)';
-  } else {
-    topControl.style.display = '';
-    controls.style.display = '';
-    botControl.style.display = '';
+//     settingsMenu.style.height = 'calc(var(--vh) * 92)';
+//     settingsMenu.style.maxHeight = 'calc(var(--vh) * 92)';
+//   } else {
+//     topControl.style.display = '';
+//     controls.style.display = '';
+//     botControl.style.display = '';
 
-    textDiv.style.height = 'calc(var(--vh) * 77)';
-    textDiv.style.maxHeight = 'calc(var(--vh) * 77)';
+//     textDiv.style.height = 'calc(var(--vh) * 77)';
+//     textDiv.style.maxHeight = 'calc(var(--vh) * 77)';
 
-    libraryMenu.style.height = 'calc(var(--vh) * 77)';
-    libraryMenu.style.maxHeight = 'calc(var(--vh) * 77)';
+//     libraryMenu.style.height = 'calc(var(--vh) * 77)';
+//     libraryMenu.style.maxHeight = 'calc(var(--vh) * 77)';
 
-    settingsMenu.style.height = 'calc(var(--vh) * 77)';
-    settingsMenu.style.maxHeight = 'calc(var(--vh) * 77)';
-  }
-}
+//     settingsMenu.style.height = 'calc(var(--vh) * 77)';
+//     settingsMenu.style.maxHeight = 'calc(var(--vh) * 77)';
+//   }
+// }
 
 function ToggleMenu(
   array: HTMLElement[],
@@ -377,18 +381,18 @@ function PlayPauseResumeSpeech() {
     textArea.disabled = true;
 
     window.speechSynthesis.speak(speech);
-    iPlay.src = './assets/play.svg';
+    iPlay.src = pause;
     playing = true;
   } else if (playing && !window.speechSynthesis.paused) {
     window.speechSynthesis.pause();
     textArea.value = formattedText;
     textArea.disabled = false;
-    iPlay.src = './assets/play.svg';
+    iPlay.src = play;
   } else if (playing && window.speechSynthesis.paused) {
     speech.text = hiddenText.innerText.substring(locationIndex);
     window.speechSynthesis.resume();
     textArea.disabled = true;
-    iPlay.src = './assets/pause.svg';
+    iPlay.src = pause;
   }
 }
 
@@ -434,7 +438,7 @@ function StopSpeech() {
   locationIndex = 0;
   locationNumber.value = locationIndex.toString();
   textArea.disabled = false;
-  iPlay.src = './assets/play.svg';
+  iPlay.src = play;
 }
 
 function ChangeVolume(volume: number) {
@@ -586,7 +590,6 @@ function LoadNewText(source: string) {
 
 function LoadText(source: string, trigger: string) {
   currentSource = source;
-  console.log(currentSource);
   $.ajax({
     method: 'POST',
     url: trigger,
@@ -595,10 +598,7 @@ function LoadText(source: string, trigger: string) {
       currentSource,
     },
     success: function (result) {
-      console.log(result);
-      // result = JSON.parse(result);
       // console.log(result);
-      // return;
       if (trigger === 'GETTEXT') {
         const volumes = result[0];
         const chapters = result[1];
@@ -616,9 +616,9 @@ function LoadText(source: string, trigger: string) {
         }
       }
     },
-    error(result) {
-      console.log(result);
-    },
+    // error(result) {
+    //   // console.log(result);
+    // },
   });
 }
 
@@ -643,7 +643,7 @@ function LoadChapter(trigger: string) {
       total
     },
     success: function (result) {
-      console.log(result);
+      // console.log(result);
       formattedText = result[0][0];
       savedText = result[0][1];
       textArea.value = formattedText;
@@ -653,9 +653,9 @@ function LoadChapter(trigger: string) {
         PlayPauseResumeSpeech();
       }
     },
-    error: function(result){
-      console.log(result);
-    }
+    // error: function(result){
+    //   console.log(result);
+    // }
   });
 }
 

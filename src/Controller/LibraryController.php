@@ -9,8 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\LibraryModel;
 
@@ -34,7 +32,7 @@ class LibraryController extends AbstractController
   {
     $source = (string)$request->get('currentSource');
     $model = new LibraryModel();
-    $files = $model->GetFiles($source);  
+    $files = $model->GetFiles($source);
     $response = new Response(json_encode($files));
     $response->headers->set('Content-Type', 'application/json');
     return $response;
@@ -50,6 +48,7 @@ class LibraryController extends AbstractController
     $model = new LibraryModel();
     $chapter = $model->GetChapter($source, $index);
 
+    // $response = new Response(json_encode([$index, $total]));
     $response = new Response(json_encode([$chapter, $index]));
     $response->headers->set('Content-Type', 'application/json');
     return $response;
@@ -70,14 +69,6 @@ class LibraryController extends AbstractController
     $response = new Response(json_encode([$chapter, $index]));
     $response->headers->set('Content-Type', 'application/json');
     return $response;
-    
-    // $source = (string)$request->data[0];
-    // $index = (int)$request->data[1];
-    // $total = (int)$request->data[2];
-    // if($index > 0) $index--;
-    // $model = new LibraryModel();
-    // $chapter = $model->GetChapter($source, $index);
-    // return [$chapter, $index];
   }
 
   #[Route('/NEXTCHAPTER', methods: ['POST'])]
@@ -95,13 +86,5 @@ class LibraryController extends AbstractController
     $response = new Response(json_encode([$chapter, $index]));
     $response->headers->set('Content-Type', 'application/json');
     return $response;
-
-    // $source = (string)$request->data[0];
-    // $index = (int)$request->data[1];
-    // $total = (int)$request->data[2];
-    // if($index < $total) $index++;
-    // $model = new LibraryModel();
-    // $chapter = $model->GetChapter($source, $index);
-    // return [$chapter, $index];
   }
 }
