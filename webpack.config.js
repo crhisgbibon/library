@@ -1,12 +1,4 @@
-// const Encore = require('@symfony/webpack-encore');
-// import Encore from '@symfony/webpack-encore';
-import * as Encore from '@symfony/webpack-encore';
-
-declare const process: {
-  env: {
-    NODE_ENV: string;
-  };
-};
+const Encore = require('@symfony/webpack-encore');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -99,7 +91,4 @@ Encore
     })
 ;
 
-// module.exports = Encore.getWebpackConfig();
-
-const webpackConfig = Encore.getWebpackConfig();
-export default webpackConfig;
+module.exports = Encore.getWebpackConfig();
