@@ -1,5 +1,12 @@
-const Encore = require('@symfony/webpack-encore');
-const fileLoaderConfig = require('./file-loader.config');
+// const Encore = require('@symfony/webpack-encore');
+// import Encore from '@symfony/webpack-encore';
+import * as Encore from '@symfony/webpack-encore';
+
+declare const process: {
+  env: {
+    NODE_ENV: string;
+  };
+};
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -22,8 +29,6 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('play', './images/play.svg')
-    .addEntry('pause', './images/pause.svg')
 
     .enableTypeScriptLoader()
     .enableForkedTypeScriptTypesChecking()
@@ -76,18 +81,25 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    // .autoProvidejQuery()
 
     .enablePostCssLoader()
 
-    .configureLoaderRule('images', rule => {
-      rule
-        .test(/\.(png|jpe?g|gif|svg)$/)
-        .use('file-loader')
-        .loader('file-loader')
-        .options(fileLoaderConfig.options)
-        .end();
+    .copyFiles({
+      from: './assets/images',
+
+      // optional target path, relative to the output dir
+      //  to: 'images/[path][name].[ext]',
+
+      // if versioning is enabled, add the file hash too
+      to: 'images/[path][name].[hash:8].[ext]',
+
+      // only copy files matching this pattern
+      //pattern: /\.(png|jpg|jpeg)$/
     })
 ;
 
-module.exports = Encore.getWebpackConfig();
+// module.exports = Encore.getWebpackConfig();
+
+const webpackConfig = Encore.getWebpackConfig();
+export default webpackConfig;

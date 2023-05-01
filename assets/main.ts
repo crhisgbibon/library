@@ -1,7 +1,10 @@
 'use strict';
 
-const pause = require('./images/pause.svg');
-const play = require('./images/play.svg');
+const imagesContext = require.context('./images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);
+imagesContext.keys().forEach(imagesContext);
+
+const playPath = imagesContext('./play.svg');
+const pausePath = imagesContext('./pause.svg');
 
 function CalculateVh() {
   const vh = window.innerHeight * 0.01;
@@ -381,18 +384,18 @@ function PlayPauseResumeSpeech() {
     textArea.disabled = true;
 
     window.speechSynthesis.speak(speech);
-    iPlay.src = pause;
+    iPlay.src = pausePath;
     playing = true;
   } else if (playing && !window.speechSynthesis.paused) {
     window.speechSynthesis.pause();
     textArea.value = formattedText;
     textArea.disabled = false;
-    iPlay.src = play;
+    iPlay.src = playPath;
   } else if (playing && window.speechSynthesis.paused) {
     speech.text = hiddenText.innerText.substring(locationIndex);
     window.speechSynthesis.resume();
     textArea.disabled = true;
-    iPlay.src = pause;
+    iPlay.src = pausePath;
   }
 }
 
@@ -438,7 +441,7 @@ function StopSpeech() {
   locationIndex = 0;
   locationNumber.value = locationIndex.toString();
   textArea.disabled = false;
-  iPlay.src = play;
+  iPlay.src = playPath;
 }
 
 function ChangeVolume(volume: number) {
