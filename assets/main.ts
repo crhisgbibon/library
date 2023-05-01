@@ -593,6 +593,7 @@ function LoadNewText(source: string) {
 
 function LoadText(source: string, trigger: string) {
   currentSource = source;
+  console.log(currentSource, trigger);
   $.ajax({
     method: 'POST',
     url: trigger,
@@ -601,7 +602,7 @@ function LoadText(source: string, trigger: string) {
       currentSource,
     },
     success: function (result) {
-      // console.log(result);
+      console.log(result);
       if (trigger === 'GETTEXT') {
         const volumes = result[0];
         const chapters = result[1];
@@ -619,9 +620,9 @@ function LoadText(source: string, trigger: string) {
         }
       }
     },
-    // error(result) {
-    //   // console.log(result);
-    // },
+    error(result) {
+      console.log(result);
+    },
   });
 }
 
