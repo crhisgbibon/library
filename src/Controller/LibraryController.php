@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\LibraryModel;
 
@@ -41,8 +43,13 @@ class LibraryController extends AbstractController
   /**
    * @Route("/GETTEXT", methods={"POST"})
   */
-  public function GetFiles(Request $request) : Response
+  public function GetFiles(CsrfTokenManagerInterface $csrfTokenManager, Request $request) : Response
   {
+    $submittedToken = $request->headers->get('X-CSRF-TOKEN');
+    if ($this->isCsrfTokenValid('delete-item', $submittedToken)){
+        return new JsonResponse(['error' => 'Invalid CSRF token'], 400);
+    }
+    
     $source = (string)$request->get('currentSource');
     $model = new LibraryModel();
     $files = $model->GetFiles($source);
@@ -54,8 +61,13 @@ class LibraryController extends AbstractController
   /**
    * @Route("/GETCHAPTER", methods={"POST"})
   */
-  public function GetChapter(Request $request) : Response
+  public function GetChapter(CsrfTokenManagerInterface $csrfTokenManager, Request $request) : Response
   {
+    $submittedToken = $request->headers->get('X-CSRF-TOKEN');
+    if ($this->isCsrfTokenValid('delete-item', $submittedToken)){
+        return new JsonResponse(['error' => 'Invalid CSRF token'], 400);
+    }
+
     $source = (string)$request->get('currentSource');
     $index = (int)$request->get('index');
     $total = (int)$request->get('total');
@@ -72,8 +84,13 @@ class LibraryController extends AbstractController
   /**
    * @Route("/LASTCHAPTER", methods={"POST"})
   */
-  function LastChapter(Request $request) : Response
+  function LastChapter(CsrfTokenManagerInterface $csrfTokenManager, Request $request) : Response
   {
+    $submittedToken = $request->headers->get('X-CSRF-TOKEN');
+    if ($this->isCsrfTokenValid('delete-item', $submittedToken)){
+        return new JsonResponse(['error' => 'Invalid CSRF token'], 400);
+    }
+
     $source = (string)$request->get('currentSource');
     $index = (int)$request->get('index');
     $total = (int)$request->get('total');
@@ -91,8 +108,13 @@ class LibraryController extends AbstractController
   /**
    * @Route("/NEXTCHAPTER", methods={"POST"})
   */
-  function NextChapter(Request $request) : Response
+  function NextChapter(CsrfTokenManagerInterface $csrfTokenManager, Request $request) : Response
   {
+    $submittedToken = $request->headers->get('X-CSRF-TOKEN');
+    if ($this->isCsrfTokenValid('delete-item', $submittedToken)){
+        return new JsonResponse(['error' => 'Invalid CSRF token'], 400);
+    }
+
     $source = (string)$request->get('currentSource');
     $index = (int)$request->get('index');
     $total = (int)$request->get('total');

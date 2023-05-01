@@ -35,6 +35,8 @@
       </div>
     </div>
 
+    <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}"/>
+
     <div id="messageBoxHolder" style="display:none;"><div id="messageBox"></div></div>
 
     <div id="libraryMenu" class="fixed z-10 bg-white mx-auto flex flex-col justify-start items-center">

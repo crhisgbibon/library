@@ -1,5 +1,7 @@
 'use strict';
 
+import $ from 'jquery';
+
 const imagesContext = require.context('./images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);
 imagesContext.keys().forEach(imagesContext);
 
@@ -594,12 +596,19 @@ function LoadNewText(source: string) {
 function LoadText(source: string, trigger: string) {
   currentSource = source;
   console.log(currentSource, trigger);
+  const csrfToken: string = <string>$('#csrf_token').val();
+  console.log(csrfToken);
+  // const path = '{{ path(' + trigger +') }}';
+
   $.ajax({
     method: 'POST',
     url: trigger,
     headers: {},
     data: {
       currentSource,
+    },
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
     },
     success: function (result) {
       console.log(result);
@@ -637,6 +646,10 @@ function LoadChapter(trigger: string) {
   }
   const index = chapterSelect.options[chapterSelect.selectedIndex].dataset.number;
   const total = chapterSelect.dataset.total;
+  const csrfToken: string = <string>$('#csrf_token').val();
+  console.log(csrfToken);
+  // const path = '{{ path(' + trigger +') }}';
+
   $.ajax({
     method: 'POST',
     url: trigger,
@@ -645,6 +658,9 @@ function LoadChapter(trigger: string) {
       currentSource,
       index,
       total
+    },
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
     },
     success: function (result) {
       // console.log(result);
