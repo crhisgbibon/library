@@ -27,6 +27,16 @@ class LibraryController extends AbstractController
     ]);
   }
 
+  #[Route('/GETTEXT', methods: ['GET'])]
+  public function GetFiles1(Request $request) : Response
+  {
+    return $this->render('library.html.twig', [
+      'links' => ['test'],
+      'genres' => [],
+      'authors' => [],
+    ]);
+  }
+
   #[Route('/GETTEXT', methods: ['POST'])]
   public function GetFiles(Request $request) : Response
   {
@@ -39,7 +49,7 @@ class LibraryController extends AbstractController
   }
 
   #[Route('/GETCHAPTER', methods: ['POST'])]
-  public function GetChapter(Request $request)
+  public function GetChapter(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
     $index = (int)$request->get('index');
@@ -55,7 +65,7 @@ class LibraryController extends AbstractController
   }
 
   #[Route('/LASTCHAPTER', methods: ['POST'])]
-  function LastChapter(Request $request)
+  function LastChapter(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
     $index = (int)$request->get('index');
@@ -72,7 +82,7 @@ class LibraryController extends AbstractController
   }
 
   #[Route('/NEXTCHAPTER', methods: ['POST'])]
-  function NextChapter(Request $request)
+  function NextChapter(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
     $index = (int)$request->get('index');
