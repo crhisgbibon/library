@@ -14,7 +14,9 @@ use App\Entity\LibraryModel;
 
 class LibraryController extends AbstractController
 {
-  #[Route('/', methods: ['GET', 'POST'])]
+  /**
+   * @Route("/", methods={"GET"})
+  */
   public function index(Connection $connection): Response
   {
     $model = new LibraryModel();
@@ -27,14 +29,18 @@ class LibraryController extends AbstractController
     ]);
   }
 
-  #[Route('/test', methods: ['GET'])]
+  /**
+   * @Route("/test", methods={"GET"})
+  */
   public function TestPage(Request $request) : Response
   {
     return $this->render('test.html.twig', [
     ]);
   }
 
-  #[Route('/GETTEXT', methods: ['POST'])]
+  /**
+   * @Route("/GETTEXT", methods={"POST"})
+  */
   public function GetFiles(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
@@ -45,7 +51,9 @@ class LibraryController extends AbstractController
     return $response;
   }
 
-  #[Route('/GETCHAPTER', methods: ['POST'])]
+  /**
+   * @Route("/GETCHAPTER", methods={"POST"})
+  */
   public function GetChapter(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
@@ -61,7 +69,9 @@ class LibraryController extends AbstractController
     return $response;
   }
 
-  #[Route('/LASTCHAPTER', methods: ['POST'])]
+  /**
+   * @Route("/LASTCHAPTER", methods={"POST"})
+  */
   function LastChapter(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
@@ -78,7 +88,9 @@ class LibraryController extends AbstractController
     return $response;
   }
 
-  #[Route('/NEXTCHAPTER', methods: ['POST'])]
+  /**
+   * @Route("/NEXTCHAPTER", methods={"POST"})
+  */
   function NextChapter(Request $request) : Response
   {
     $source = (string)$request->get('currentSource');
