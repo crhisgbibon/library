@@ -2,7 +2,11 @@
 
 import $ from 'jquery';
 
-const imagesContext = require.context('./images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);
+const imagesContext = require.context(
+  './images',
+  true,
+  /\.(png|jpg|jpeg|gif|ico|svg|webp)$/
+);
 imagesContext.keys().forEach(imagesContext);
 
 const playPath = imagesContext('./play.svg');
@@ -16,15 +20,6 @@ function CalculateVh() {
 window.addEventListener('DOMContentLoaded', CalculateVh);
 window.addEventListener('resize', CalculateVh);
 window.addEventListener('orientationchange', CalculateVh);
-
-// const topControl: HTMLElement = <HTMLElement>(
-//   document.getElementById('topControl')
-// );
-// const controls: HTMLElement = <HTMLElement>document.getElementById('controls');
-// const botControl: HTMLElement = <HTMLElement>(
-//   document.getElementById('botControl')
-// );
-// const textDiv: HTMLElement = <HTMLElement>document.getElementById('textDiv');
 
 const messageBoxHolder: HTMLElement = <HTMLElement>(
   document.getElementById('messageBoxHolder')
@@ -307,37 +302,6 @@ for (let i = 0; i < filterauthors.length; i++) {
   };
 }
 
-// function ToggleView() {
-//   toggleView = !toggleView;
-//   if (toggleView) {
-//     topControl.style.display = 'none';
-//     controls.style.display = 'none';
-//     botControl.style.display = 'none';
-
-//     textDiv.style.height = 'calc(var(--vh) * 92)';
-//     textDiv.style.maxHeight = 'calc(var(--vh) * 92)';
-
-//     libraryMenu.style.height = 'calc(var(--vh) * 92)';
-//     libraryMenu.style.maxHeight = 'calc(var(--vh) * 92)';
-
-//     settingsMenu.style.height = 'calc(var(--vh) * 92)';
-//     settingsMenu.style.maxHeight = 'calc(var(--vh) * 92)';
-//   } else {
-//     topControl.style.display = '';
-//     controls.style.display = '';
-//     botControl.style.display = '';
-
-//     textDiv.style.height = 'calc(var(--vh) * 77)';
-//     textDiv.style.maxHeight = 'calc(var(--vh) * 77)';
-
-//     libraryMenu.style.height = 'calc(var(--vh) * 77)';
-//     libraryMenu.style.maxHeight = 'calc(var(--vh) * 77)';
-
-//     settingsMenu.style.height = 'calc(var(--vh) * 77)';
-//     settingsMenu.style.maxHeight = 'calc(var(--vh) * 77)';
-//   }
-// }
-
 function ToggleMenu(
   array: HTMLElement[],
   buttons: HTMLElement[],
@@ -407,18 +371,6 @@ function ChangeLocationIndex(newValue: number) {
 }
 
 function GetCaretPosition(ctrl: HTMLInputElement) {
-  // IE < 9 Support
-  // if(document.selection)
-  // {
-  //   ctrl.focus();
-  //   let range = document.selection.createRange();
-  //   let rangelen = range.text.length;
-  //   range.moveStart('character', -ctrl.value.length);
-  //   let start = range.text.length - rangelen;
-  //   return start + rangelen;
-  // }// IE >=9 and other browsers
-  // else
-
   return ctrl.selectionStart ? <number>ctrl.selectionStart : 0;
 }
 
@@ -595,10 +547,7 @@ function LoadNewText(source: string) {
 
 function LoadText(source: string, trigger: string) {
   currentSource = source;
-  console.log(currentSource, trigger);
   const csrfToken: string = <string>$('#csrf_token').val();
-  console.log(csrfToken);
-  // const path = '{{ path(' + trigger +') }}';
 
   $.ajax({
     method: 'POST',
@@ -607,11 +556,10 @@ function LoadText(source: string, trigger: string) {
     data: {
       currentSource,
     },
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
     },
     success: function (result) {
-      console.log(result);
       if (trigger === 'GETTEXT') {
         const volumes = result[0];
         const chapters = result[1];
@@ -629,9 +577,6 @@ function LoadText(source: string, trigger: string) {
         }
       }
     },
-    error(result) {
-      console.log(result);
-    },
   });
 }
 
@@ -644,11 +589,10 @@ function LoadChapter(trigger: string) {
     MessageBox('Please select a text to load.');
     return;
   }
-  const index = chapterSelect.options[chapterSelect.selectedIndex].dataset.number;
+  const index =
+    chapterSelect.options[chapterSelect.selectedIndex].dataset.number;
   const total = chapterSelect.dataset.total;
   const csrfToken: string = <string>$('#csrf_token').val();
-  console.log(csrfToken);
-  // const path = '{{ path(' + trigger +') }}';
 
   $.ajax({
     method: 'POST',
@@ -657,13 +601,12 @@ function LoadChapter(trigger: string) {
     data: {
       currentSource,
       index,
-      total
+      total,
     },
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
     },
     success: function (result) {
-      // console.log(result);
       formattedText = result[0][0];
       savedText = result[0][1];
       textArea.value = formattedText;
@@ -673,9 +616,6 @@ function LoadChapter(trigger: string) {
         PlayPauseResumeSpeech();
       }
     },
-    // error: function(result){
-    //   console.log(result);
-    // }
   });
 }
 

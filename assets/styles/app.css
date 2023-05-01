@@ -158,12 +158,12 @@
   transform: scale(90%, 90%);
 }
 
-#triggerSelectFile{
+#triggerSelectFile {
   height: calc(var(--vh) * 65);
   max-height: calc(var(--vh) * 65);
 }
 
-#loadFile{
+#loadFile {
   height: calc(var(--vh) * 5);
   max-height: calc(var(--vh) * 5);
 }
