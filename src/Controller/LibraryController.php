@@ -27,13 +27,10 @@ class LibraryController extends AbstractController
     ]);
   }
 
-  #[Route('/GETTEXT', methods: ['GET'])]
-  public function GetFiles1(Request $request) : Response
+  #[Route('/test', methods: ['GET'])]
+  public function TestPage(Request $request) : Response
   {
-    return $this->render('library.html.twig', [
-      'links' => ['test'],
-      'genres' => [],
-      'authors' => [],
+    return $this->render('test.html.twig', [
     ]);
   }
 
